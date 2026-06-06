@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hydroponic Calculator</title>
+  <meta name="theme-color" content="#1f7a4d" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="icons/icon-512.png" />
+  <link rel="apple-touch-icon" href="icons/icon-512.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Hydroponics assistant</p>
+        <h1>Nutrient Calculator</h1>
+        <p class="hero-subtitle">Masterblend, phosphoric acid, peroxide, and mascot judgement in one small offline app.</p>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark or light mode">🌙 Dark</button>
+    </header>
+
+    <nav class="tabs" aria-label="Calculator tabs">
+      <button class="tab active" data-tab="nutrients">Nutrients</button>
+      <button class="tab" data-tab="acid">Acid</button>
+      <button class="tab" data-tab="peroxide">Peroxide</button>
+      <button class="tab" data-tab="presets">Presets</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </nav>
+
+    <section class="panel tab-panel active" id="tab-nutrients">
+      <div class="panel-title-row">
+        <h2>Mix calculator</h2>
+        <span class="pill" id="strengthPill">100%</span>
+      </div>
+
+      <div class="slider-card nutrient-layout">
+        <div class="slider-water-input">
+          <label>
+            <span>Water volume</span>
+            <div class="field-with-unit compact">
+              <input id="waterVolume" type="number" min="0" step="0.1" value="20" inputmode="decimal">
+              <b>L</b>
+            </div>
+          </label>
+        </div>
+
+        <div class="mascot-corner">
+          <div class="mascot-bubble" id="nutrientMessage">Perfect leafy-green strength.</div>
+          <img id="nutrientMascot" class="mascot mascot-pop" src="assets/mascot_success.png" alt="Mascot reaction">
+        </div>
+
+        <div class="slider-headerline">
+          <span class="axis-label">0%</span>
+          <span class="axis-label">200%</span>
+        </div>
+
+        <div class="slider-wrap" id="sliderWrap">
+          <div class="slider-track">
+            <div class="slider-fill" id="sliderFill"></div>
+            <div class="slider-thumb" id="sliderThumb" aria-hidden="true"></div>
+          </div>
+          <input id="strengthRange" class="range-overlay" type="range" min="0" max="200" step="1" value="100" aria-label="Nutrient strength slider">
+          <div class="floating-value" id="floatingValue">100%</div>
+        </div>
+
+        <div class="preset-row">
+          <button data-preset="25">25%</button>
+          <button data-preset="50">50%</button>
+          <button data-preset="75">75%</button>
+          <button data-preset="100">100%</button>
+          <button data-preset="150">150%</button>
+        </div>
+
+        <div class="manual-strength-row">
+          <label>
+            <span>Manual nutrient strength</span>
+            <div class="field-with-unit compact">
+              <input id="nutrientStrength" type="number" min="0" max="200" step="1" value="100" inputmode="decimal">
+              <b>%</b>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <article class="result-card">
+          <span>Masterblend 4-18-38</span>
+          <strong id="mbGrams">0.00 g</strong>
+          <small id="mbPerL">0.000 g/L</small>
+        </article>
+        <article class="result-card">
+          <span>Magnesium sulfate</span>
+          <strong id="mgGrams">0.00 g</strong>
+          <small id="mgPerL">0.000 g/L</small>
+        </article>
+        <article class="result-card">
+          <span>Calcium nitrate</span>
+          <strong id="caGrams">0.00 g</strong>
+          <small id="caPerL">0.000 g/L</small>
+        </article>
+      </div>
+
+      <div class="mix-order">
+        <b>Mix order</b>
+        <span>1. Masterblend</span>
+        <span>2. Magnesium sulfate</span>
+        <span>3. Calcium nitrate</span>
+      </div>
+    </section>
+
+    <section class="panel tab-panel" id="tab-acid">
+      <div class="panel-title-row">
+        <h2>Phosphoric acid calculator</h2>
+        <span class="pill">Calibrated</span>
+      </div>
+
+      <div class="mascot-side">
+        <img id="acidMascot" class="mascot" src="assets/mascot_scientist.png" alt="Scientist mascot">
+        <p id="acidMessage">Set your current and target pH. The estimate uses your saved acid calibration.</p>
+      </div>
+
+      <div class="input-grid three">
+        <label>
+          <span>Water volume</span>
+          <div class="field-with-unit">
+            <input id="acidVolume" type="number" min="0" step="0.1" value="20" inputmode="decimal">
+            <b>L</b>
+          </div>
+        </label>
+        <label>
+          <span>Current pH</span>
+          <div class="field-with-unit">
+            <input id="currentPh" type="number" min="0" max="14" step="0.01" value="7.0" inputmode="decimal">
+            <b>pH</b>
+          </div>
+        </label>
+        <label>
+          <span>Target pH</span>
+          <div class="field-with-unit">
+            <input id="targetPh" type="number" min="0" max="14" step="0.01" value="5.8" inputmode="decimal">
+            <b>pH</b>
+          </div>
+        </label>
+      </div>
+
+      <div class="result-grid two-cards">
+        <article class="result-card">
+          <span>Estimated 75% phosphoric acid</span>
+          <strong id="acid75Result">0.00 mL</strong>
+          <small id="acid75Note">Based on saved calibration.</small>
+        </article>
+        <article class="result-card">
+          <span>Estimated 7.5% diluted acid</span>
+          <strong id="acidDilutedResult">0.00 mL</strong>
+          <small>10× the 75% amount.</small>
+        </article>
+      </div>
+
+      <div class="input-grid two acid-manual-row">
+        <label>
+          <span>Manual 75% acid amount</span>
+          <div class="field-with-unit">
+            <input id="acid75" type="number" min="0" step="0.1" value="1" inputmode="decimal">
+            <b>mL</b>
+          </div>
+        </label>
+        <label>
+          <span>Diluted 7.5% equivalent</span>
+          <div class="field-with-unit">
+            <input id="acid75diluted" type="number" min="0" step="0.1" value="10" inputmode="decimal">
+            <b>mL</b>
+          </div>
+        </label>
+      </div>
+
+      <div class="notice">
+        pH correction is only an estimate because tap-water alkalinity changes. Add acid in portions, mix well, then measure again.
+      </div>
+    </section>
+
+    <section class="panel tab-panel" id="tab-peroxide">
+      <div class="panel-title-row">
+        <h2>3% peroxide calculator</h2>
+        <span class="pill" id="peroxidePill">Maintenance</span>
+      </div>
+
+      <div class="mascot-side">
+        <img id="peroxideMascot" class="mascot" src="assets/mascot_cleaning.png" alt="Cleaning mascot">
+        <p id="peroxideMessage">Cleaning mode. Select a dose and whether plants are present.</p>
+      </div>
+
+      <div class="input-grid three">
+        <label>
+          <span>Water volume</span>
+          <div class="field-with-unit">
+            <input id="peroxideVolume" type="number" min="0" step="0.1" value="140" inputmode="decimal">
+            <b>L</b>
+          </div>
+        </label>
+        <label>
+          <span>Dose</span>
+          <div class="field-with-unit">
+            <input id="peroxideDose" type="number" min="0" step="0.1" value="1" inputmode="decimal">
+            <b>mL/L</b>
+          </div>
+        </label>
+        <label class="checkbox-card">
+          <input id="plantsPresent" type="checkbox" checked>
+          <span>Plants present</span>
+        </label>
+      </div>
+
+      <div class="preset-row peroxide-presets">
+        <button data-peroxide="0.5">0.5 mL/L</button>
+        <button data-peroxide="1">1 mL/L</button>
+        <button data-peroxide="2">2 mL/L</button>
+        <button data-peroxide="3">3 mL/L</button>
+        <button data-peroxide="5">5 mL/L</button>
+      </div>
+
+      <div class="result-grid single">
+        <article class="result-card">
+          <span>3% hydrogen peroxide needed</span>
+          <strong id="peroxideMl">0 mL</strong>
+          <small id="peroxideNote">Maintenance dose</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel tab-panel" id="tab-presets">
+      <div class="panel-title-row">
+        <h2>Saved amounts</h2>
+        <button class="primary" id="savePreset">Save current mix</button>
+      </div>
+
+      <div class="mascot-side">
+        <img id="presetMascot" class="mascot" src="assets/mascot_idle.png" alt="Preset mascot">
+        <p id="presetMessage">Save common reservoir or top-up mixes here.</p>
+      </div>
+
+      <div id="presetList" class="preset-list"></div>
+    </section>
+    <section class="panel tab-panel" id="tab-settings">
+      <div class="panel-title-row">
+        <h2>Settings</h2>
+        <button class="primary danger-button" id="resetSettings" type="button">Reset standards</button>
+      </div>
+
+      <div class="mascot-side">
+        <img class="mascot" src="assets/mascot_scientist.png" alt="Settings mascot">
+        <p>Adjust the recipe baseline and acid calibration. Values are saved locally on this device.</p>
+      </div>
+
+      <section class="settings-block">
+        <h3>Nutrient 100% baseline</h3>
+        <p class="settings-help">These are grams per liter at 100% strength. Default is the leafy-greens Masterblend baseline.</p>
+
+        <div class="input-grid three">
+          <label>
+            <span>Masterblend 4-18-38</span>
+            <div class="field-with-unit">
+              <input id="setMbPerL" type="number" min="0" step="0.001" inputmode="decimal">
+              <b>g/L</b>
+            </div>
+          </label>
+          <label>
+            <span>Magnesium sulfate</span>
+            <div class="field-with-unit">
+              <input id="setMgPerL" type="number" min="0" step="0.001" inputmode="decimal">
+              <b>g/L</b>
+            </div>
+          </label>
+          <label>
+            <span>Calcium nitrate</span>
+            <div class="field-with-unit">
+              <input id="setCaPerL" type="number" min="0" step="0.001" inputmode="decimal">
+              <b>g/L</b>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <section class="settings-block">
+        <h3>Acid calibration</h3>
+        <p class="settings-help">Enter a real correction you measured. Example: 20 L water, 1.0 mL of 75% acid, pH 7.0 → 5.8. The app calculates your personal mL/L per pH drop.</p>
+
+        <div class="input-grid four">
+          <label>
+            <span>Test volume</span>
+            <div class="field-with-unit">
+              <input id="setAcidCalVolume" type="number" min="0.01" step="0.1" inputmode="decimal">
+              <b>L</b>
+            </div>
+          </label>
+          <label>
+            <span>75% acid used</span>
+            <div class="field-with-unit">
+              <input id="setAcidCalMl" type="number" min="0" step="0.01" inputmode="decimal">
+              <b>mL</b>
+            </div>
+          </label>
+          <label>
+            <span>pH before</span>
+            <div class="field-with-unit">
+              <input id="setAcidPhBefore" type="number" min="0" max="14" step="0.01" inputmode="decimal">
+              <b>pH</b>
+            </div>
+          </label>
+          <label>
+            <span>pH after</span>
+            <div class="field-with-unit">
+              <input id="setAcidPhAfter" type="number" min="0" max="14" step="0.01" inputmode="decimal">
+              <b>pH</b>
+            </div>
+          </label>
+        </div>
+
+        <div class="result-grid single">
+          <article class="result-card">
+            <span>Saved acid calibration</span>
+            <strong id="acidCalibrationReadout">—</strong>
+            <small>mL of 75% acid per liter per 1.0 pH drop.</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="settings-block">
+        <h3>Peroxide</h3>
+        <p class="settings-help">Peroxide stays fixed to 3% for now. The safety bands are intentionally conservative for plant-present dosing.</p>
+      </section>
+
+      <div class="settings-actions">
+        <button class="primary" id="saveSettings" type="button">Save settings</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
